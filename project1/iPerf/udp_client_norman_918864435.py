@@ -32,6 +32,11 @@ def iperf_send(data, host, port):
       except Exception as e:
         print("Failed to send bytes: {e}")
 
+    # Send any remaining data
+    if len(data) % chunk_size != 0:
+        last_chunk = data[num_chunks * chunk_size:]
+        sock.sendto(last_chunk, (host, port))
+
     sock.sendto(b"END", (host, port))
 
 
