@@ -1,7 +1,5 @@
 import dpkt
 import sys
-import socket
-from datetime import datetime
 
 def parse_pcap(pcap_file):
     try:
@@ -25,15 +23,9 @@ def parse_pcap(pcap_file):
                         try:
                             if tcp.dport == 80:
                                 http = dpkt.http.Request(tcp.data)
-                                # Print GET URLs
-                                if http.method == b'GET':
-                                    print("GET URL:", http.uri)
-                            elif tcp.sport == 80:
-                                http = dpkt.http.Response(tcp.data)
-                                # Print JSON payloads for POST requests
-                                if b'content-type' in http.headers and b'application/json' in http.headers[b'content-type']:
-                                    print("JSON Payload:", http.body.decode('utf-8'))
-                            print("HTTP Headers:", http.headers)
+                                print("GET URL:", http.uri)
+                                print("HTTP Headers:", http.headers)
+                                print("HTTP Payload:", http.body)
                         except (dpkt.dpkt.NeedData, dpkt.dpkt.UnpackError):
                             pass
     except FileNotFoundError:
