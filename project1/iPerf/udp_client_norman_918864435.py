@@ -39,6 +39,11 @@ def iperf_send(data, host, port):
 
     sock.sendto(b"END", (host, port))
 
+    throughput_data, _ = sock.recvfrom(1024)
+    throughput = float(throughput_data.decode())
+    
+    print(f"Throughput: {throughput:.2f} KB/s")
+
 
 def main():
   SERVER_HOST = '127.0.0.1'
